@@ -1,0 +1,23 @@
+name: Semi-linear git history required
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  No backmerges in PRs:
+    runs-on: ubuntu-latest
+    if: github.repository != 'zoomin-software/.github'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout
+        with:
+          fetch-depth: 0
+
+      - name: Check for backwards merges master → feature-branch
+        run: |
+          count=$(git rev-list --merges --count origin/${{ github.base_ref }}..HEAD)
+          test "$count" -eq 0 || {
+            echo "Error: This PR contains merge commits. Kindly rebase your branch on top of latest ${{ github.base_ref }}." >&2
+            exit 1
+          }
