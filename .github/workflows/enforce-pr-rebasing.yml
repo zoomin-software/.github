@@ -5,12 +5,12 @@ on:
     types: [opened, synchronize, reopened, edited]
 
 jobs:
-  No backmerges in PRs:
+  No-backmerges-in-PR:
     runs-on: ubuntu-latest
     if: github.repository != 'zoomin-software/.github'
     steps:
       - name: Checkout code
-        uses: actions/checkout
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
