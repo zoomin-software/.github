@@ -16,12 +16,12 @@ jobs:
 
       - name: Ensure needed refs fetched
         run: |
-          git fetch origin "${{ github.base_ref }}" "${{ github.head_ref }}"
+          git fetch origin +"${{ github.base_ref }}":target_branch +"${{ github.head_ref }}":feature_branch
           git branch -avv
 
       - name: Check for backwards merges master → feature-branch
         run: |
-          count=$(git rev-list --merges --count "${{ github.base_ref }}".."${{ github.head_ref }}")
+          count=$(git rev-list --merges --count target_branch..feature_branch)
           test "$count" -eq 0 || {
             echo "Error: This PR contains merge commits. Kindly rebase your branch on top of latest ${{ github.base_ref }}." >&2
             exit 1
