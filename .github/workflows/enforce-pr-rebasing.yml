@@ -19,6 +19,10 @@ jobs:
           git fetch origin +"${{ github.base_ref }}":target_branch +"${{ github.head_ref }}":feature_branch
           git branch -avv
 
+      - name: Exact sequence of commits about to get merged
+        if: runner.debug == '1'
+        run: git log --format=oneline target_branch..feature_branch
+
       - name: Check for backwards merges master → feature-branch
         run: |
           count=$(git rev-list --merges --count target_branch..feature_branch)
