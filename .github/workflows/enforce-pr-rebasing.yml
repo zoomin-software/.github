@@ -16,7 +16,7 @@ jobs:
 
       - name: Check for backwards merges master → feature-branch
         run: |
-          count=$(git rev-list --merges --count origin/${{ github.base_ref }}..HEAD)
+          count=$(git rev-list --merges --count origin/${{ github.base_ref }}..${{ github.head_ref }})
           test "$count" -eq 0 || {
             echo "Error: This PR contains merge commits. Kindly rebase your branch on top of latest ${{ github.base_ref }}." >&2
             exit 1
